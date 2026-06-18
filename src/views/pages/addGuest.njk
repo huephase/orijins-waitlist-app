@@ -1,0 +1,9 @@
+{% extends "layouts/base.njk" %}
+{% block title %}Add guest | {{ appName }}{% endblock %}
+{% block content %}
+  <section class="form-panel">
+    <h1>Add guest</h1>
+    {% include "partials/_messages.njk" %}
+    {% include "partials/_guestForm.njk" %}
+  </section>
+{% endblock %}

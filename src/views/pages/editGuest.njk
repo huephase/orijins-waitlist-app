@@ -1,0 +1,10 @@
+{% extends "layouts/base.njk" %}
+{% block title %}Edit guest | {{ appName }}{% endblock %}
+{% block content %}
+  <section class="form-panel">
+    <h1>Edit guest</h1>
+    {% include "partials/_messages.njk" %}
+    {% set formAction = "/guests/" + guest.id %}
+    {% include "partials/_guestForm.njk" %}
+  </section>
+{% endblock %}

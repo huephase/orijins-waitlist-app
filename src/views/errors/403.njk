@@ -1,0 +1,3 @@
+{% extends "layouts/base.njk" %}
+{% block title %}Forbidden | {{ appName }}{% endblock %}
+{% block content %}<section class="empty-state"><h1>403</h1><p>{{ message or "You do not have access to this page." }}</p></section>{% endblock %}

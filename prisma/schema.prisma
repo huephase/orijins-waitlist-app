@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  HOST
+  VIEWER
+}
+
+enum GuestStatus {
+  WAITING
+  SEATED
+  NO_SHOW
+  CANCELLED
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  passwordHash  String
+  name          String
+  role          UserRole @default(HOST)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  guestsAdded   Guest[]  @relation("AddedBy")
+  guestsUpdated Guest[]  @relation("UpdatedBy")
+}
+
+model Guest {
+  id              String      @id @default(cuid())
+  name            String
+  partySize       Int
+  phoneNumber     String?
+  email           String?
+  tableNumber     String?
+  specialNotes    String?
+  status          GuestStatus @default(WAITING)
+  waitlistAt      DateTime    @default(now())
+  scheduledSeatAt DateTime
+  seatedAt        DateTime?
+  resolvedAt      DateTime?
+  addedById       String
+  addedBy         User        @relation("AddedBy", fields: [addedById], references: [id])
+  updatedById     String?
+  updatedBy       User?       @relation("UpdatedBy", fields: [updatedById], references: [id])
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model Session {
+  sid    String   @id
+  sess   Json
+  expire DateTime
+
+  @@index([expire])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String
+  entity    String
+  entityId  String
+  actorId   String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+}

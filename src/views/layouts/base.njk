@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include "partials/_head.njk" %}
+    <title>{% block title %}{{ appName }}{% endblock %}</title>
+  </head>
+  <body>
+    <div class="landscape-overlay">Please rotate your device to portrait orientation for the best experience.</div>
+    {% include "partials/_header.njk" %}
+    <main class="shell">
+      {% block content %}{% endblock %}
+    </main>
+    {% include "partials/_footer.njk" %}
+    <script src="/js/ui.js" defer></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

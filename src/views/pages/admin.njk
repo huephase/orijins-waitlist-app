@@ -1,0 +1,38 @@
+{% extends "layouts/base.njk" %}
+{% block title %}Admin | {{ appName }}{% endblock %}
+{% block content %}
+  <section class="page-head"><div><h1>Admin</h1><p>User management</p></div></section>
+  {% include "partials/_messages.njk" %}
+  <section class="form-panel">
+    <h2>Create user</h2>
+    <form class="form" method="post" action="/admin/users">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+      <div class="form-grid">
+        <label>Name <input name="name" required></label>
+        <label>Email <input type="email" name="email" required></label>
+        <label>Password <input type="password" name="password" minlength="8" required></label>
+        <label>Role <select name="role"><option>HOST</option><option>VIEWER</option><option>SUPER_ADMIN</option></select></label>
+      </div>
+      <button class="primary-button" type="submit">Create user</button>
+    </form>
+  </section>
+  <section class="table-wrap">
+    <table>
+      <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Active</th><th>Update</th></tr></thead>
+      <tbody>
+        {% for account in users %}
+          <tr>
+            <form method="post" action="/admin/users/{{ account.id }}">
+              <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+              <td><input name="name" value="{{ account.name }}"></td>
+              <td><input type="email" name="email" value="{{ account.email }}"></td>
+              <td><select name="role"><option {% if account.role == "HOST" %}selected{% endif %}>HOST</option><option {% if account.role == "VIEWER" %}selected{% endif %}>VIEWER</option><option {% if account.role == "SUPER_ADMIN" %}selected{% endif %}>SUPER_ADMIN</option></select></td>
+              <td><input type="checkbox" name="isActive" {% if account.isActive %}checked{% endif %}></td>
+              <td><input type="password" name="password" placeholder="New password"><button type="submit">Save</button></td>
+            </form>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+{% endblock %}

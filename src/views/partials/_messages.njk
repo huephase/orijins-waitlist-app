@@ -1,0 +1,10 @@
+{% if errors and errors.length %}
+  <div class="alert alert-danger">
+    {% for error in errors %}
+      <p>{{ error.msg }}</p>
+    {% endfor %}
+  </div>
+{% endif %}
+{% if message %}
+  <div class="alert">{{ message }}</div>
+{% endif %}

@@ -1,0 +1,67 @@
+{% extends "layouts/base.njk" %}
+{% block title %}Waitlist | {{ appName }}{% endblock %}
+{% block content %}
+  <section class="page-head">
+    <div>
+      <h1>Guest waitlist</h1>
+      <p>{{ guests.length }} guests tracked today</p>
+    </div>
+    {% if user.role != "VIEWER" %}
+      <a class="primary-button" href="/guests/new">Add guest</a>
+    {% endif %}
+  </section>
+
+  <section class="table-wrap" data-waitlist data-polling-interval="{{ config.waitlist.polling_interval_ms }}" data-warning-minutes="{{ config.waitlist.warning_minutes_before }}">
+    <table class="waitlist-table">
+      <thead>
+        <tr>
+          <th>#</th><th>Guest</th><th>Party</th><th>Phone</th><th>Table</th><th>Notes</th><th>Scheduled</th><th>Waitlisted</th><th>Status</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for guest in guests %}
+          {% set color = getColorStatus(guest.status, guest.scheduledSeatAt) %}
+          <tr class="status-{{ color }}" data-scheduled-seat-at="{{ guest.scheduledSeatAt.toISOString() }}" data-status="{{ guest.status }}">
+            <td data-label="#">{{ loop.index }}</td>
+            <td data-label="Guest">{{ guest.name }}</td>
+            <td data-label="Party">{{ guest.partySize }}</td>
+            <td data-label="Phone">{{ guest.phoneNumber or "-" }}</td>
+            <td data-label="Table">{{ guest.tableNumber or "-" }}</td>
+            <td data-label="Notes">{{ guest.specialNotes or "-" }}</td>
+            <td data-label="Scheduled">{{ formatUaeDateTime(guest.scheduledSeatAt) }}</td>
+            <td data-label="Waitlisted">{{ formatUaeDateTime(guest.waitlistAt) }}</td>
+            <td data-label="Status"><span class="badge">{{ guest.status }}</span></td>
+            <td data-label="Actions">
+              {% if user.role != "VIEWER" and guest.status == "WAITING" %}
+                <div class="actions">
+                  <a class="icon-link" href="/guests/{{ guest.id }}/edit" title="Edit">Edit</a>
+                  <form method="post" action="/guests/{{ guest.id }}/status/seated"><input type="hidden" name="_csrf" value="{{ csrfToken }}"><button type="submit">Seated</button></form>
+                  <form method="post" action="/guests/{{ guest.id }}/status/noshow"><input type="hidden" name="_csrf" value="{{ csrfToken }}"><button type="submit">No-show</button></form>
+                  <form method="post" action="/guests/{{ guest.id }}/status/cancelled" data-confirm-modal data-confirm-title="Cancel guest?" data-confirm-message="This guest will be marked as cancelled and removed from the waitlist.">
+                    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                    <button type="submit">Cancel</button>
+                  </form>
+                </div>
+              {% else %}
+                -
+              {% endif %}
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="10" class="empty">No guests on the waitlist yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+  <div class="modal-backdrop" data-confirm-dialog hidden>
+    <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="confirm-dialog-title">
+      <h2 id="confirm-dialog-title" data-confirm-dialog-title>Confirm action</h2>
+      <p data-confirm-dialog-message>Continue?</p>
+      <div class="button-row modal-actions">
+        <button class="secondary-button" type="button" data-confirm-dialog-cancel>Back</button>
+        <button class="primary-button" type="button" data-confirm-dialog-confirm>Confirm</button>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block scripts %}<script src="/js/waitlist.js" defer></script>{% endblock %}

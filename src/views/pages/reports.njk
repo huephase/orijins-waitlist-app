@@ -1,0 +1,25 @@
+{% extends "layouts/base.njk" %}
+{% block title %}Reports | {{ appName }}{% endblock %}
+{% block content %}
+  <section class="page-head"><div><h1>Reports</h1><p>Today in UAE display time</p></div></section>
+  <section class="metric-grid">
+    <div><strong>{{ totals.total }}</strong><span>Total guests</span></div>
+    <div><strong>{{ totals.seated }}</strong><span>Seated</span></div>
+    <div><strong>{{ totals.noShows }}</strong><span>No-shows</span></div>
+    <div><strong>{{ totals.cancellations }}</strong><span>Cancellations</span></div>
+    <div><strong>{{ totals.averageWaitMinutes }}</strong><span>Avg wait minutes</span></div>
+  </section>
+  <section class="table-wrap">
+    <h2>Audit log</h2>
+    <table>
+      <thead><tr><th>Action</th><th>Entity</th><th>Actor</th><th>Time</th></tr></thead>
+      <tbody>
+        {% for log in auditLogs %}
+          <tr><td>{{ log.action }}</td><td>{{ log.entity }}</td><td>{{ log.actorId or "-" }}</td><td>{{ formatUaeDateTime(log.createdAt) }}</td></tr>
+        {% else %}
+          <tr><td colspan="4" class="empty">No audit activity today.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+{% endblock %}

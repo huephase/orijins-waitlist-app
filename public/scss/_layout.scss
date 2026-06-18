@@ -1,0 +1,81 @@
+body {
+  min-height: 100vh;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-primary);
+}
+
+.app-header,
+.app-footer,
+.shell {
+  width: min(1240px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+}
+
+.brand,
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand {
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.brand-mark {
+  display: inline-grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--color-primary);
+  color: white;
+}
+
+.nav a {
+  text-decoration: none;
+  color: var(--color-text-secondary);
+}
+
+.shell {
+  padding: 24px 0 40px;
+}
+
+.app-footer {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  padding: 24px 0;
+  color: var(--color-text-secondary);
+  font-size: 0.88rem;
+}
+
+.page-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.page-head h1,
+.auth-panel h1,
+.form-panel h1 {
+  font-family: var(--font-secondary);
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.page-head p {
+  margin-top: 6px;
+  color: var(--color-text-secondary);
+}

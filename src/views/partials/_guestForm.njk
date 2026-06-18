@@ -1,0 +1,71 @@
+<form class="form" method="post" action="{{ formAction or '/guests' }}" data-guest-form>
+  <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+  <div class="form-grid">
+    <label>Guest name <input name="name" maxlength="100" required value="{{ form.name or guest.name }}"></label>
+    {% set selectedPartySize = form.partySize or guest.partySize or 2 %}
+    <label>Party size
+      <select name="partySize" required>
+        {% for partySize in partySizeOptions %}
+          <option value="{{ partySize }}" {% if partySize == selectedPartySize %}selected{% endif %}>{{ partySize }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Phone <input type="tel" name="phoneNumber" value="{{ form.phoneNumber or guest.phoneNumber }}"></label>
+    <label>Email <input type="email" name="email" value="{{ form.email or guest.email }}"></label>
+    <label>Table <input name="tableNumber" value="{{ form.tableNumber or guest.tableNumber }}"></label>
+  </div>
+  <fieldset class="seating-block">
+    <legend>Seating time</legend>
+    <div class="segmented-buttons">
+      <label>
+        <input type="radio" name="seatingMode" value="minutes" {% if seatingMode != "specific" %}checked{% endif %}>
+        <span>Minutes from now</span>
+      </label>
+      <label>
+        <input type="radio" name="seatingMode" value="specific" {% if seatingMode == "specific" %}checked{% endif %}>
+        <span>Specific time</span>
+      </label>
+    </div>
+    <div class="seating-fields">
+      <label data-minutes-field>Minutes <input type="number" name="minutesFromNow" min="0" max="1440" value="{{ form.minutesFromNow or 15 }}" data-minutes-input></label>
+      <div class="time-picker" data-time-field>
+        <span class="field-label">Time</span>
+        <input type="hidden" name="scheduledTime" value="{{ form.scheduledTime }}" data-scheduled-time>
+        <div class="time-select-grid">
+          <label>Hour
+            <select data-time-hour>
+              {% for hour in timeHourOptions %}
+                <option value="{{ hour }}">{{ hour }}</option>
+              {% endfor %}
+            </select>
+          </label>
+          <label>Minute
+            <select data-time-minute>
+              {% for minute in timeMinuteOptions %}
+                <option value="{{ minute }}">{{ minute }}</option>
+              {% endfor %}
+            </select>
+          </label>
+          <label>Period
+            <select data-time-period>
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <div class="modal-backdrop" data-time-warning hidden>
+    <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="time-warning-title">
+      <h2 id="time-warning-title">Future time required</h2>
+      <p>Please choose a future seating time. The picker was moved 2 minutes ahead.</p>
+      <button class="primary-button" type="button" data-time-warning-close>OK</button>
+    </div>
+  </div>
+  <label>Special notes <textarea name="specialNotes" maxlength="500">{{ form.specialNotes or guest.specialNotes }}</textarea></label>
+  <div class="button-row">
+    <button class="primary-button" type="submit">Save guest</button>
+    <a class="secondary-button" href="/">Cancel</a>
+  </div>
+</form>

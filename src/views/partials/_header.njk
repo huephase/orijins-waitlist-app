@@ -1,0 +1,20 @@
+<header class="app-header">
+  <a class="brand" href="/">
+    <span class="brand-mark">WL</span>
+    <span>{{ appName }}</span>
+  </a>
+  {% if user %}
+    <button class="icon-button nav-toggle" type="button" aria-label="Open navigation" data-nav-toggle>☰</button>
+    <nav class="nav" data-nav>
+      <a href="/">Waitlist</a>
+      <a href="/reports">Reports</a>
+      {% if user.role == "SUPER_ADMIN" %}
+        <a href="/admin">Admin</a>
+      {% endif %}
+      <form method="post" action="/logout">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        <button class="text-button" type="submit">Logout</button>
+      </form>
+    </nav>
+  {% endif %}
+</header>

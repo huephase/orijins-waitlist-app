@@ -1,0 +1,14 @@
+{% extends "layouts/base.njk" %}
+{% block title %}Login | {{ appName }}{% endblock %}
+{% block content %}
+  <section class="auth-panel">
+    <h1>Sign in</h1>
+    {% include "partials/_messages.njk" %}
+    <form class="form" method="post" action="/login">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+      <label>Email <input type="email" name="email" autocomplete="email" required></label>
+      <label>Password <input type="password" name="password" autocomplete="current-password" required></label>
+      <button class="primary-button" type="submit">Sign in</button>
+    </form>
+  </section>
+{% endblock %}
