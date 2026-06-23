@@ -6,7 +6,9 @@ const PgSession = pgSession(session);
 
 export function createSessionMiddleware() {
   const maxAge = Number(process.env.SESSION_MAX_AGE_MS ?? 86_400_000);
-  const isProduction = process.env.NODE_ENV === 'production';
+  const secureCookie = process.env.SESSION_COOKIE_SECURE
+    ? process.env.SESSION_COOKIE_SECURE === 'true'
+    : process.env.NODE_ENV === 'production';
 
   const pool = new pg.Pool({
     connectionString: process.env.DATABASE_URL,
@@ -25,7 +27,7 @@ export function createSessionMiddleware() {
     }),
     cookie: {
       httpOnly: true,
-      secure: isProduction,
+      secure: secureCookie,
       sameSite: 'strict',
       maxAge,
     },

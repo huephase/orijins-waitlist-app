@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import { prisma } from './services/prisma';
 import { sanitizeEmail } from './utils/sanitize';
 
-async function main() {
+export async function seedAdminUser() {
   const email = sanitizeEmail(process.env.SEED_ADMIN_EMAIL ?? 'admin@example.com');
   const password = process.env.SEED_ADMIN_PASSWORD ?? 'ChangeMe123!';
   const name = process.env.SEED_ADMIN_NAME ?? 'Super Admin';
@@ -22,11 +22,15 @@ async function main() {
   console.log(`Seeded super admin: ${email}`);
 }
 
-main()
-  .catch((error) => {
-    console.error(error);
-    process.exitCode = 1;
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+if (require.main === module) {
+  seedAdminUser()
+    .catch((error) => {
+      console.error(error);
+      process.exitCode = 1;
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+}
+
+export default seedAdminUser;

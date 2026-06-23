@@ -18,6 +18,7 @@ export const guestValidators = [
     .toInt()
     .isInt({ min: 1, max: config.waitlist.max_party_size })
     .withMessage(`Party size must be between 1 and ${config.waitlist.max_party_size}.`),
+  body('phonePrefix').optional({ values: 'falsy' }).isIn(config.phone_prefixes),
   body('phoneNumber').optional({ values: 'falsy' }).customSanitizer((value) => sanitizeString(value, 30)),
   body('email').optional({ values: 'falsy' }).customSanitizer(sanitizeEmail).isEmail(),
   body('tableNumber').optional({ values: 'falsy' }).customSanitizer((value) => sanitizeString(value, 30)),

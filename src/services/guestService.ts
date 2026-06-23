@@ -7,6 +7,7 @@ import { sanitizeEmail, sanitizeMultiline, sanitizeString } from '../utils/sanit
 export interface GuestFormInput {
   name: string;
   partySize: number;
+  phonePrefix?: string;
   phoneNumber?: string;
   email?: string;
   tableNumber?: string;
@@ -24,10 +25,12 @@ function scheduledSeatAtFromInput(input: GuestFormInput): Date {
 }
 
 function normalizeGuestData(input: GuestFormInput) {
+  const phonePrefix = input.phonePrefix ? sanitizeString(input.phonePrefix, 3) : '';
+  const phoneNumber = input.phoneNumber ? sanitizeString(input.phoneNumber, 30) : '';
   return {
     name: sanitizeString(input.name, 100),
     partySize: Number(input.partySize),
-    phoneNumber: input.phoneNumber ? sanitizeString(input.phoneNumber, 30) : null,
+    phoneNumber: phonePrefix || phoneNumber ? `${phonePrefix}${phoneNumber}` : null,
     email: input.email ? sanitizeEmail(input.email) : null,
     tableNumber: input.tableNumber ? sanitizeString(input.tableNumber, 30) : null,
     specialNotes: input.specialNotes ? sanitizeMultiline(input.specialNotes, 500) : null,

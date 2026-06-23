@@ -114,8 +114,12 @@ textarea {
 
 .seating-fields {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 14px;
+}
+
+.seating-fields [hidden] {
+  display: none;
 }
 
 .time-picker {
@@ -135,7 +139,39 @@ textarea {
 }
 
 .time-select-grid label {
-  gap: 5px;
+  gap: 10px;
+}
+
+.phone-input-group {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 8px;
+}
+
+.minutes-field {
+  gap: 10px;
+}
+
+.minute-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.preset-pill {
+  border: 2px solid var(--color-border);
+  border-radius: 999px;
+  padding: 10px 40px;
+  background: var(--color-accent);
+  color: var(--color-text-secondary);
+  font-size: 0.82rem;
+  font-weight: bold;
+}
+
+.preset-pill:hover,
+.preset-pill:focus-visible {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .primary-button,
@@ -217,29 +253,29 @@ th {
 }
 
 .status-upcoming {
-  background: color-mix(in srgb, var(--color-status-upcoming), white 82%);
+  background: color-mix(in srgb, var(--color-status-upcoming), white 50%);
   animation: flash 1.4s infinite;
 }
 
 .status-now {
-  background: color-mix(in srgb, var(--color-status-now), white 82%);
+  background: color-mix(in srgb, var(--color-status-now), white 10%);
   animation: flash 1s infinite;
 }
 
 .status-overdue {
-  background: color-mix(in srgb, var(--color-status-overdue), white 82%);
+  background: color-mix(in srgb, var(--color-status-overdue), white 10%);
 }
 
 .status-seated {
-  background: color-mix(in srgb, var(--color-status-seated), white 86%);
+  background: color-mix(in srgb, var(--color-status-seated), white 10%);
 }
 
 .status-noshow {
-  background: color-mix(in srgb, var(--color-status-noshow), white 84%);
+  background: color-mix(in srgb, var(--color-status-noshow), white 10%);
 }
 
 .status-cancelled {
-  background: color-mix(in srgb, var(--color-status-cancelled), white 70%);
+  background: color-mix(in srgb, var(--color-status-cancelled), white 10%);
 }
 
 .metric-grid {

@@ -12,6 +12,7 @@ import { templateMiddleware } from './middleware/templateMiddleware';
 
 export function createApp() {
   const app = express();
+  const csrfProtection = csrf();
 
   nunjucks.configure(path.join(__dirname, 'views'), {
     autoescape: true,
@@ -26,7 +27,7 @@ export function createApp() {
   app.use(express.json());
   app.use(express.static(path.resolve(process.cwd(), 'public')));
   app.use(createSessionMiddleware());
-  app.use(csrf());
+  app.use(csrfProtection);
   app.use((req, res, next) => {
     res.locals.csrfToken = req.csrfToken();
     next();

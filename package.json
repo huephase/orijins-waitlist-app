@@ -52,5 +52,8 @@
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.2"
+  },
+  "overrides": {
+    "@types/express-serve-static-core": "4.19.8"
   }
 }

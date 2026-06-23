@@ -1,13 +1,13 @@
 {
   "app": {
-    "name": "Restaurant Waitlist",
+    "name": "ORIJINS Waitlist System",
     "timezone_display": "Asia/Dubai",
     "timezone_storage": "UTC"
   },
   "colors": {
-    "primary": "#243447",
+    "primary": "#335174",
     "secondary": "#17212B",
-    "accent": "#D94F45",
+    "accent": "#fff2d2",
     "background": "#F6F4EF",
     "surface": "#FFFFFF",
     "text_primary": "#202124",
@@ -30,12 +30,23 @@
     "polling_interval_ms": 30000,
     "max_party_size": 10
   },
+  "phone_prefixes": [
+    "050",
+    "052",
+    "053",
+    "054",
+    "055",
+    "056",
+    "057",
+    "058",
+    "059"
+  ],
   "scheduler": {
     "daily_report_cron": "0 3 * * *",
     "daily_report_time_utc": "03:00"
   },
   "og_meta": {
-    "title": "Restaurant Waitlist",
+    "title": "ORIJINS Waitlist System",
     "description": "Guest waiting list management system",
     "image": "/images/og-image.png"
   },

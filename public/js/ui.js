@@ -49,8 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const hourSelect = guestForm.querySelector('[data-time-hour]');
   const minuteSelect = guestForm.querySelector('[data-time-minute]');
   const periodSelect = guestForm.querySelector('[data-time-period]');
+  const minutesField = guestForm.querySelector('[data-minutes-field]');
+  const timeField = guestForm.querySelector('.time-picker[data-time-field]');
   const timeWarning = guestForm.querySelector('[data-time-warning]');
   const timeWarningClose = guestForm.querySelector('[data-time-warning-close]');
+  const minutePresets = guestForm.querySelectorAll('[data-minute-preset]');
 
   const padTime = (value) => String(value).padStart(2, '0');
 
@@ -112,22 +115,18 @@ document.addEventListener('DOMContentLoaded', () => {
     syncScheduledTime();
   };
 
-  const setSpecificTimeToNow = () => {
-    setTimeSelectsFromDate(new Date());
-    if (minutesInput) minutesInput.value = '0';
+  const syncSeatFields = () => {
+    const mode = guestForm.querySelector('input[name="seatingMode"]:checked')?.value;
+    if (minutesField) minutesField.hidden = mode !== 'minutes';
+    if (timeField) timeField.hidden = mode !== 'specific';
     syncScheduledTime();
   };
 
-  const syncSeatFields = () => {
-    const mode = guestForm.querySelector('input[name="seatingMode"]:checked')?.value;
-    const minutes = guestForm.querySelector('[data-minutes-field]');
-    const time = guestForm.querySelector('[data-time-field]');
-    if (minutes) minutes.hidden = mode !== 'minutes';
-    if (time) time.hidden = mode !== 'specific';
-    if (mode === 'specific') {
-      setSpecificTimeToNow();
-      syncScheduledTime();
-    }
+  const setMinutesFromPreset = (value) => {
+    if (!minutesInput) return;
+    minutesInput.value = String(Number(value));
+    hideTimeWarning();
+    syncTimeFromMinutes();
   };
 
   guestForm.querySelectorAll('input[name="seatingMode"]').forEach((input) => {
@@ -136,6 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
   minutesInput?.addEventListener('input', () => {
     hideTimeWarning();
     syncTimeFromMinutes();
+  });
+  minutePresets.forEach((button) => {
+    button.addEventListener('click', () => {
+      setMinutesFromPreset(button.getAttribute('data-minute-preset') || '0');
+    });
   });
   [hourSelect, minuteSelect, periodSelect].forEach((input) => {
     input?.addEventListener('change', () => {

@@ -10,7 +10,17 @@
         {% endfor %}
       </select>
     </label>
-    <label>Phone <input type="tel" name="phoneNumber" value="{{ form.phoneNumber or guest.phoneNumber }}"></label>
+    <label>Phone
+      <div class="phone-input-group">
+        <select name="phonePrefix" aria-label="UAE mobile prefix">
+          <option value="">Prefix</option>
+          {% for prefix in phonePrefixOptions %}
+            <option value="{{ prefix }}" {% if form.phonePrefix == prefix %}selected{% endif %}>{{ prefix }}</option>
+          {% endfor %}
+        </select>
+        <input type="tel" name="phoneNumber" value="{{ form.phoneNumber or guest.phoneNumber }}">
+      </div>
+    </label>
     <label>Email <input type="email" name="email" value="{{ form.email or guest.email }}"></label>
     <label>Table <input name="tableNumber" value="{{ form.tableNumber or guest.tableNumber }}"></label>
   </div>
@@ -27,9 +37,16 @@
       </label>
     </div>
     <div class="seating-fields">
-      <label data-minutes-field>Minutes <input type="number" name="minutesFromNow" min="0" max="1440" value="{{ form.minutesFromNow or 15 }}" data-minutes-input></label>
+      <label class="minutes-field" data-minutes-field>
+        Minutes
+        <input type="number" name="minutesFromNow" min="0" max="1440" value="{{ form.minutesFromNow or 15 }}" data-minutes-input>
+        <div class="minute-presets" aria-label="Minute presets">
+          {% for preset in [5, 10, 15, 20, 25, 30, 45, 60] %}
+            <button class="preset-pill" type="button" data-minute-preset="{{ preset }}">{{ preset }}</button>
+          {% endfor %}
+        </div>
+      </label>
       <div class="time-picker" data-time-field>
-        <span class="field-label">Time</span>
         <input type="hidden" name="scheduledTime" value="{{ form.scheduledTime }}" data-scheduled-time>
         <div class="time-select-grid">
           <label>Hour

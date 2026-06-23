@@ -13,6 +13,7 @@ export interface AppConfig {
     polling_interval_ms: number;
     max_party_size: number;
   };
+  phone_prefixes: string[];
   scheduler: {
     daily_report_cron: string;
     daily_report_time_utc: string;
@@ -55,6 +56,7 @@ declare global {
       csrfToken?: string;
       cssVariables: string;
       partySizeOptions: number[];
+      phonePrefixOptions: string[];
       timeHourOptions: number[];
       timeMinuteOptions: string[];
     }
